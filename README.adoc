@@ -4,7 +4,7 @@
 
 == Általános
 
-... projekt célja ...
+A projekt célja azon eszközök összefogása, mely a java fejlesztésekben segítséget nyújt.
 
 == Projekt felépéítése
 
