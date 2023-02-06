@@ -4,6 +4,20 @@
 
 == Általános
 
+... projekt célja ...
+
+== Projekt felépéítése
+
+* `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
+
+
+
+== Code formatter
+
+|| Test | | |
+| | | |
+--
+
 
 
 Copyright (C) 2023 i-Cell Mobilsoft Zrt.
