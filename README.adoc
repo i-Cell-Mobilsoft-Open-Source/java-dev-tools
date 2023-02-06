@@ -11,11 +11,13 @@
 * `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
 
 
-
 == Code formatter
+
+Jelenleg elérhető kód formatterek úgy lettek elkészítve, hogy az eclipse formatter lett exportálva, az idea-ba importálva, és onnan kiexportálva.
+
 [cols="1,1,1,1,1"]
 |===
-| setting id | default value | Icell value | verzió fájl-tól| magyarázat
+| Beállítás azonosítója | Alapértelmezett érték | Használt érték | Verzió fájl-tól| Magyarázat
 | org.eclipse.jdt.core.formatter.comment.insert_new_line_for_parameter | do not insert | insert | v15 | ?
 | org.eclipse.jdt.core.formatter.comment.indent_root_tags | false | true | v15 | ?
 | org.eclipse.jdt.core.formatter.comment.count_line_length_from_starting_position | true | false | v15 | ?
@@ -33,8 +35,6 @@
 | org.eclipse.jdt.core.formatter.lineSplit | 120 | 150 | v15 | 150 karakter sor tördelés
 | org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation | 0 (*1) | 16 | v16 | Az annotaciók tördelése nem jól történt, konkrétan ki van default kapcsolva
 |===
-
-
 
 
 Copyright (C) 2023 i-Cell Mobilsoft Zrt.
