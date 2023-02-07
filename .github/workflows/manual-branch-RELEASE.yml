@@ -1,0 +1,95 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual Run automatic Maven Release
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+
+env:
+  GPG_KEY_ID_GITHUB_TECHUSER: '${{ secrets.GPG_KEY_ID_GITHUB_TECHUSER }}'
+  TECH_USER_USERNAME: 'icellmobilsoft-robot'
+  TECH_USER_EMAIL: 'github_techuser@icellmobilsoft.hu'
+  PROJECT_NAME: 'java-dev-tools'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  manual-main-RELEASE:
+    name: Manual main release
+
+    # Permission ellenorzes https://github.community/t/who-has-permission-to-workflow-dispatch/133981
+    if: contains('["rombow","czenczl","speter555"]', github.actor) && startsWith(github.ref, 'refs/heads/release')
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Import GPG key
+        # GPG privat kulcs, ami armor-al exportalva (kezdete: '-----BEGIN PGP PRIVATE KEY BLOCK-----') ez az egesz tartalom base64 elkodolva, az betoltve a secrets tartalomnak
+        # dekodoljuk a base64 elkodolt privat kulcsot es betoltjuk
+        run: |
+          mkdir -p ~/.gnupg/
+          echo "${{ secrets.GPG_SIGNING_KEY_GITHUB_TECHUSER }}" | base64 --decode > ~/.gnupg/private.key
+          gpg --import ~/.gnupg/private.key
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          # A tartalma egy PEM formatumos (kezdete: '-----BEGIN RSA PRIVATE KEY-----') SSH kulcs
+          key: ${{ secrets.SSH_PRIVATE_KEY_GITHUB_TECHUSER }}
+          name: id_rsa # optional
+          known_hosts: ${{ secrets.KNOWN_HOSTS }} # jelenleg ures a tartalma
+          # config: ${{ secrets.CONFIG }} # ssh_config; optional
+
+      - name: Configure GIT for signed commit
+        run: |
+          git config --global user.name "${{ env.TECH_USER_USERNAME }}"
+          git config --global user.email "${{ env.TECH_USER_EMAIL }}"
+          git config --global user.signingkey "${{ secrets.GPG_KEY_ID_GITHUB_TECHUSER }}"
+          git config --global commit.gpgsign true
+          git config --global tag.gpgSign true
+
+      - name: Checkout ${{ github.ref }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Get current version from .env
+        id: prepare
+        shell: bash
+        run: |
+          CURRENT_VERSION=$(sed -rn 's/^VERSION=([^\n]+)$/\1/p' .env)
+          echo current version is ${CURRENT_VERSION} 
+          
+          echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Create tag on release branch and set next minor version in .env
+        id: createRelease
+        shell: bash
+        run: |
+          
+          GIT_TAG=${{ env.PROJECT_NAME }}-${CURRENT_VERSION}          
+          echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT
+          git tag $GIT_TAG
+          echo new tag is $GIT_TAG
+          
+          NEXT_VERSION=$(echo ${{steps.prepare.outputs.CURRENT_VERSION}} |  awk -F'.' '{print $1"."$2"."$3+1}' |  sed s/[.]$//)
+          
+          sed -ir "s/^[#]*\s*VERSION=.*/VERSION=$NEXT_VERSION/" .env
+          echo ".env file VERSION property succesfully updated ('${{steps.prepare.outputs.CURRENT_VERSION}}' -> '$NEXT_VERSION')"
+          git commit -a -m "Bump version to $NEXT_VERSION"
+          git push --atomic origin ${{ github.ref }} $GIT_TAG
+
+      - name: Checkout ${{ github.ref }}
+        uses: actions/checkout@v3
+
+
+      - name: Create Release
+        uses: mikepenz/action-gh-release@v0.2.0-a03
+        with:
+          tag_name: ${{steps.preset.createRelease.GIT_TAG}}
+          token: ${{ secrets.GH_TOKEN_TECHUSER_JAVA }}
+          draft: true
+          prerelease: false
