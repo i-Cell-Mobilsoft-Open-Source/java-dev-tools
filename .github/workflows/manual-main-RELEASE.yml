@@ -75,6 +75,7 @@ jobs:
           git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} origin/main
           
           GIT_TAG=${{ env.PROJECT_NAME }}-${CURRENT_VERSION}          
+          echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT
           git tag $GIT_TAG
           echo new tag is $GIT_TAG
           
@@ -82,7 +83,7 @@ jobs:
           
           sed -ir "s/^[#]*\s*VERSION=.*/VERSION=$NEXT_VERSION/" .env
           echo ".env file VERSION property succesfully updated ('${{steps.prepare.outputs.CURRENT_VERSION}}' -> '$NEXT_VERSION')"
-          it commit -a -m "Bump version to $NEXT_VERSION"
+          git commit -a -m "Bump version to $NEXT_VERSION"
           git push --atomic origin ${{steps.preset.outputs.RELEASE_BRANCH_NAME}} $GIT_TAG
 
       - name: Checkout ${{ github.ref }}
@@ -120,7 +121,7 @@ jobs:
       - name: Create Release
         uses: mikepenz/action-gh-release@v0.2.0-a03
         with:
-          tag_name: ${{steps.preset.outputs.SCM_TAG}}
+          tag_name: ${{steps.preset.createRelease.GIT_TAG}}
           token: ${{ secrets.GH_TOKEN_TECHUSER_JAVA }}
           draft: true
           prerelease: false
