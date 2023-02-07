@@ -90,6 +90,8 @@ jobs:
 
       - name: Checkout ${{ github.ref }}
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
 
       - name: Bump version branch
         id: bumpbranch
