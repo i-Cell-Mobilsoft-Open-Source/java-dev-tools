@@ -80,6 +80,7 @@ jobs:
 
       - name: Create tag and set next minor version in .env
         id: createRelease
+        shell: bash
         run: |
           git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{ github.ref }}
           git tag ${{steps.prepare.outputs.GIT_TAG}}
