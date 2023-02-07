@@ -53,6 +53,8 @@ jobs:
 
       - name: Checkout ${{ github.ref }}
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
 
       - name: Get current version from .env
         id: prepare
@@ -72,7 +74,7 @@ jobs:
         id: createRelease
         shell: bash
         run: |
-          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} origin/main
+          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{ github.ref }}
           
           GIT_TAG=${{ env.PROJECT_NAME }}-${CURRENT_VERSION}          
           echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT
@@ -115,7 +117,7 @@ jobs:
           title: ${{steps.bumpbranch.outputs.COMMIT_MESSAGE}}
           committer: ${{ env.TECH_USER_USERNAME }} <${{ env.TECH_USER_EMAIL }}>
           author: ${{ env.TECH_USER_USERNAME }} <${{ env.TECH_USER_EMAIL }}>
-          base: main
+          base: ${{ github.ref }}
           delete-branch: true
 
       - name: Create Release

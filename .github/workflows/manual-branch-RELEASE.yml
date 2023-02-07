@@ -17,7 +17,7 @@ env:
 jobs:
 
   manual-main-RELEASE:
-    name: Manual main release
+    name: Manual branch release
 
     # Permission ellenorzes https://github.community/t/who-has-permission-to-workflow-dispatch/133981
     if: contains('["rombow","czenczl","speter555"]', github.actor) && startsWith(github.ref, 'refs/heads/release')
