@@ -69,24 +69,26 @@ jobs:
           echo new release branch name is $RELEASE_BRANCH_NAME
           
           echo "RELEASE_BRANCH_NAME=${RELEASE_BRANCH_NAME}" >> $GITHUB_OUTPUT
-
-      - name: Create tag on release branch and set next minor version in .env
-        id: createRelease
-        shell: bash
-        run: |
-          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{ github.ref }}
           
           GIT_TAG=${{ env.PROJECT_NAME }}-${CURRENT_VERSION}          
-          echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT
-          git tag $GIT_TAG
-          echo new tag is $GIT_TAG
+          echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT      
+          echo git tag will be $GIT_TAG
           
-          NEXT_VERSION=$(echo ${{steps.prepare.outputs.CURRENT_VERSION}} |  awk -F'.' '{print $1"."$2"."$3+1}' |  sed s/[.]$//)
+          NEXT_VERSION=$(echo $CURRENT_VERSION |  awk -F'.' '{print $1"."$2"."$3+1}' |  sed s/[.]$//)      
+          echo "NEXT_VERSION=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+          echo next version will be $NEXT_VERSION
+
+      - name: Create tag and set next minor version in .env
+        id: createRelease
+        run: |
+          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{ github.ref }}
+          git tag ${{steps.prepare.outputs.GIT_TAG}}
           
-          sed -ir "s/^[#]*\s*VERSION=.*/VERSION=$NEXT_VERSION/" .env
-          echo ".env file VERSION property succesfully updated ('${{steps.prepare.outputs.CURRENT_VERSION}}' -> '$NEXT_VERSION')"
-          git commit -a -m "Bump version to $NEXT_VERSION"
-          git push --atomic origin ${{steps.preset.outputs.RELEASE_BRANCH_NAME}} $GIT_TAG
+          sed -ir "s/^[#]*\s*VERSION=.*/VERSION=${{steps.prepare.outputs.NEXT_VERSION}}/" .env
+          echo ".env file VERSION property successfully updated ('${{steps.prepare.outputs.CURRENT_VERSION}}' -> '${{steps.prepare.outputs.NEXT_VERSION}}')"
+          
+          git commit -a -m "Bump version to ${{steps.prepare.outputs.NEXT_VERSION}}"
+          git push --atomic ${{steps.preset.outputs.RELEASE_BRANCH_NAME}} ${{steps.prepare.outputs.GIT_TAG}}
 
       - name: Checkout ${{ github.ref }}
         uses: actions/checkout@v3
