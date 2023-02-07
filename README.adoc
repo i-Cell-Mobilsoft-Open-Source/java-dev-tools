@@ -1,0 +1,40 @@
+:sectnums:
+
+= java-dev-tools
+
+== Általános
+
+A projekt célja azon eszközök összefogása, mely a java fejlesztésekben segítséget nyújt.
+
+== Projekt felépéítése
+
+* `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
+
+
+== Code formatter
+
+Jelenleg elérhető kód formatterek úgy lettek elkészítve, hogy az eclipse formatter lett exportálva, az idea-ba importálva, és onnan kiexportálva.
+
+[cols="1,1,1,1,1"]
+|===
+| Beállítás azonosítója | Alapértelmezett érték | Használt érték | Verzió fájl-tól| Magyarázat
+| org.eclipse.jdt.core.formatter.comment.insert_new_line_for_parameter | do not insert | insert | v15 | ?
+| org.eclipse.jdt.core.formatter.comment.indent_root_tags | false | true | v15 | ?
+| org.eclipse.jdt.core.formatter.comment.count_line_length_from_starting_position | true | false | v15 | ?
+| org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing | do not insert | insert | v15 | Minden fájlt végére rakjon egy üres sort (számos problémát megold)
+| org.eclipse.jdt.core.formatter.format_line_comment_starting_on_first_column | false | true | v15 | ?
+| org.eclipse.jdt.core.formatter.alignment_for_annotations_on_enum_constant | 49(*1) | 0 | v15 | ?
+| org.eclipse.jdt.core.formatter.alignment_for_enum_constants | 16 (*1) | 0 | v15 | ?
+| org.eclipse.jdt.core.formatter.comment.align_tags_descriptions_grouped | true | false | v15 | ?
+| org.eclipse.jdt.core.formatter.comment.line_length | 80 | 150 | v15 | 150 karakter sor tördelés kommentekre
+| org.eclipse.jdt.core.formatter.use_on_off_tags | true | false | v15 | Ne lehessen kapcsolgatni a kódban a formattert
+| org.eclipse.jdt.core.formatter.insert_space_after_closing_angle_bracket_in_type_arguments | do not insert | insert | v15 | ?
+| org.eclipse.jdt.core.formatter.alignment_for_assertion_message | 16 (*1) | 0 | v15 | ?
+| org.eclipse.jdt.core.formatter.comment.indent_parameter_description | false | true | v15 | ?
+| org.eclipse.jdt.core.formatter.tabulation.char | tab | space | v15 | Tabulátor 4 space-el helyettesíti
+| org.eclipse.jdt.core.formatter.lineSplit | 120 | 150 | v15 | 150 karakter sor tördelés
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation | 0 (*1) | 16 | v16 | Az annotaciók tördelése nem jól történt, konkrétan ki van default kapcsolva
+|===
+
+
+Copyright (C) 2023 i-Cell Mobilsoft Zrt.
