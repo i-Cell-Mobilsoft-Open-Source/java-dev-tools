@@ -82,7 +82,7 @@ jobs:
         id: createRelease
         shell: bash
         run: |
-          git checkout -b --force ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{ github.ref }}
+          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{ github.ref }} --force 
           echo "${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} branch created." 
           git tag ${{steps.prepare.outputs.GIT_TAG}}
           echo "${{steps.prepare.outputs.GIT_TAG}} tag created."
