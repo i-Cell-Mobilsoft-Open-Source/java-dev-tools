@@ -91,7 +91,7 @@ jobs:
           ref: ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}
 
       - name: Create tag
-        id: createReleaseBranch
+        id: createTag
         shell: bash
         run: |
           git tag ${{steps.prepare.outputs.GIT_TAG}}
