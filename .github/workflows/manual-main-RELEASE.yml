@@ -140,8 +140,6 @@ jobs:
           commit-message: ${{steps.bumpbranch.outputs.COMMIT_MESSAGE}}
           branch:  ${{steps.bumpbranch.outputs.MR_BRANCH_NAME}}
           title: ${{steps.bumpbranch.outputs.COMMIT_MESSAGE}}
-          committer: ${{ env.TECH_USER_USERNAME }} <${{ env.TECH_USER_EMAIL }}>
-          author: ${{ env.TECH_USER_USERNAME }} <${{ env.TECH_USER_EMAIL }}>
           base: main
           delete-branch: true
 
