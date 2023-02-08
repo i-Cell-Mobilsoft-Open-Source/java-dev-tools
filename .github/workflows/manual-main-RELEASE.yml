@@ -124,6 +124,9 @@ jobs:
           NEXT_VERSION=$(echo ${{steps.prepare.outputs.CURRENT_VERSION}} |  awk -F'.' '{print $1"."$2+1"."0}' |  sed s/[.]$//)
           sed -ir "s/^[#]*\s*VERSION=.*/VERSION=$NEXT_VERSION/" .env
           
+          git add .
+          git commit -a -m "$COMMIT_MESSAGE"
+          
           TARGET_BRANCH_NEXT_VERSION=$(sed -rn 's/^VERSION=([^\n]+)$/\1/p' .env)
           COMMIT_MESSAGE="Bump version to $TARGET_BRANCH_NEXT_VERSION"
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_OUTPUT
