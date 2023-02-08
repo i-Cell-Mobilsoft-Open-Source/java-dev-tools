@@ -125,7 +125,7 @@ jobs:
           sed -ir "s/^[#]*\s*VERSION=.*/VERSION=$NEXT_VERSION/" .env
           
           git add .
-          git commit -a -m "$COMMIT_MESSAGE"
+          git commit -a -m "${{steps.bumpbranch.outputs.COMMIT_MESSAGE}}"
           
           TARGET_BRANCH_NEXT_VERSION=$(sed -rn 's/^VERSION=([^\n]+)$/\1/p' .env)
           COMMIT_MESSAGE="Bump version to $TARGET_BRANCH_NEXT_VERSION"
