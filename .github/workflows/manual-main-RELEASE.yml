@@ -53,6 +53,8 @@ jobs:
 
       - name: Checkout main
         uses: actions/checkout@v3
+        with:
+          ref: main
 
       - name: Get current version from .env
         id: prepare
@@ -81,7 +83,7 @@ jobs:
         id: createReleaseBranch
         shell: bash
         run: |
-          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} origin/main
+          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} refs/remotes/origin/main
           git push --set-upstream origin ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}}
           echo "${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} branch created." 
 
@@ -110,6 +112,8 @@ jobs:
 
       - name: Checkout main
         uses: actions/checkout@v3
+        with:
+          ref: main
         
 
       - name: Create bump MAJOR version branch
