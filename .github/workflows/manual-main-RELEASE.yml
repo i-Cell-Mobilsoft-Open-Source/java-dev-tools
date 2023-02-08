@@ -137,7 +137,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.2.3
         with:
-          token: ${{ secrets.GH_TOKEN_TECHUSER_JAVA }}
           commit-message: ${{steps.bumpbranch.outputs.COMMIT_MESSAGE}}
           branch:  ${{steps.bumpbranch.outputs.MR_BRANCH_NAME}}
           title: ${{steps.bumpbranch.outputs.COMMIT_MESSAGE}}
