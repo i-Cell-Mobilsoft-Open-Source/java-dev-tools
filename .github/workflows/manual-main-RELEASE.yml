@@ -20,7 +20,7 @@ jobs:
     name: Manual main release
 
     # Permission ellenorzes https://github.community/t/who-has-permission-to-workflow-dispatch/133981
-    #TODO if: contains('["rombow","czenczl","speter555"]', github.actor) && github.ref == 'refs/heads/main'
+    if: contains('["rombow","czenczl"]', github.actor) && github.ref == 'refs/heads/main'
 
     runs-on: ubuntu-latest
 
