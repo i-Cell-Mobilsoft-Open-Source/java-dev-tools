@@ -88,7 +88,7 @@ jobs:
       - name: Checkout release branch
         uses: actions/checkout@v3
         with:
-          ref: ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}
+          ref: ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}}
 
       - name: Create tag
         id: createTag
