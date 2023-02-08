@@ -107,7 +107,7 @@ jobs:
           echo ".env file VERSION property successfully updated ('${{steps.prepare.outputs.CURRENT_VERSION}}' -> '${{steps.prepare.outputs.NEXT_VERSION}}')"
           
           git commit -a -m "Bump version to ${{steps.prepare.outputs.NEXT_VERSION}}"
-          git push --atomic ${{steps.preset.outputs.RELEASE_BRANCH_NAME}} ${{steps.prepare.outputs.GIT_TAG}}
+          git push --atomic ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{steps.prepare.outputs.GIT_TAG}}
 
       - name: Checkout main
         uses: actions/checkout@v3
