@@ -92,10 +92,12 @@ jobs:
         with:
           ref: ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}}
 
-      - uses: rickstaa/action-create-tag@v1
+      - name: Create tag
         id: createTag
-        with:
-          tag: ${{steps.prepare.outputs.GIT_TAG}}
+        shell: bash
+        run: |
+          git tag -a ${{steps.prepare.outputs.GIT_TAG}} -m "Release  ${{steps.prepare.outputs.GIT_TAG}}"
+          echo "${{steps.prepare.outputs.GIT_TAG}} tag created."
 
       - name: Bump next MINOR version and commit/push it to release branch
         id: createRelease
