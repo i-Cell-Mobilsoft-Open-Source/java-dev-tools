@@ -81,7 +81,7 @@ jobs:
         id: createReleaseBranch
         shell: bash
         run: |
-          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} main
+          git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} origin/main
           git push --set-upstream origin ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}}
           echo "${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} branch created." 
 
