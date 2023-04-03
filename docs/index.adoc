@@ -9,7 +9,7 @@
 
 A projekt célja azon eszközök összefogása, mely a java fejlesztésekben segítséget nyújt.
 
-== Projekt felépéítése
+== Projekt felépítése
 
 * `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
 
