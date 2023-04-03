@@ -1,17 +1,21 @@
-# This is a basic workflow that is manually triggered
-
 name: manual-main-RELEASE
-
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
-on:
-  workflow_dispatch:
 
 env:
   GPG_KEY_ID_GITHUB_TECHUSER: '${{ secrets.GPG_KEY_ID_GITHUB_TECHUSER }}'
-  TECH_USER_USERNAME: 'icellmobilsoft-robot'
-  TECH_USER_EMAIL: 'github_techuser@icellmobilsoft.hu'
-  PROJECT_NAME: 'java-dev-tools'
+  TECH_USER_USERNAME: ${{ vars.TECH_USER_USERNAME }}
+  TECH_USER_EMAIL: ${{ vars.TECH_USER_EMAIL }}
+  PROJECT_NAME: ${GITHUB_REPOSITORY#*/}
+
+on:
+  workflow_dispatch:
+    inputs:
+      comment:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Comment for release'
+        # Default value if no value is explicitly provided
+        default: 'Start MAIN release from WEB UI'
+        # Input has to be provided for the workflow to run
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,13 +23,16 @@ jobs:
   manual-main-RELEASE:
     name: Manual main release
 
-    # Permission ellenorzes https://github.community/t/who-has-permission-to-workflow-dispatch/133981
-    if: contains('["rombow","czenczl"]', github.actor) && github.ref == 'refs/heads/main'
+    # run only on main
+    if: github.ref_name == 'main'
 
     runs-on: ubuntu-latest
 
     steps:
 
+###############
+# pre release
+###############
       - name: Import GPG key
         # GPG privat kulcs, ami armor-al exportalva (kezdete: '-----BEGIN PGP PRIVATE KEY BLOCK-----') ez az egesz tartalom base64 elkodolva, az betoltve a secrets tartalomnak
         # dekodoljuk a base64 elkodolt privat kulcsot es betoltjuk
@@ -33,7 +40,6 @@ jobs:
           mkdir -p ~/.gnupg/
           echo "${{ secrets.GPG_SIGNING_KEY_GITHUB_TECHUSER }}" | base64 --decode > ~/.gnupg/private.key
           gpg --import ~/.gnupg/private.key
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -60,24 +66,25 @@ jobs:
         id: prepare
         shell: bash
         run: |
-          CURRENT_VERSION=$(sed -rn 's/^VERSION=([^\n]+)$/\1/p' .env)
-          echo current version is ${CURRENT_VERSION} 
-          
+          CURRENT_SNAPSHOT=$(sed -rn 's/(^VERSION=)([^-]+)/\2/p' .env)
+          echo current snapshot is ${CURRENT_SNAPSHOT}
+          echo "CURRENT_SNAPSHOT=${CURRENT_SNAPSHOT}" >> $GITHUB_OUTPUT
+
+          CURRENT_VERSION=$(sed -rn 's/(^VERSION=)([^-]+)(-SNAPSHOT|)$/\2/p' .env)
+          echo current version is ${CURRENT_VERSION}
           echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
 
           RELEASE_BRANCH_NAME=release/${{ env.PROJECT_NAME }}-${CURRENT_VERSION%.*}.x
           echo new release branch name is $RELEASE_BRANCH_NAME
-          
           echo "RELEASE_BRANCH_NAME=${RELEASE_BRANCH_NAME}" >> $GITHUB_OUTPUT
-          
-          GIT_TAG=${{ env.PROJECT_NAME }}-${CURRENT_VERSION}          
-          echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT      
+
+          GIT_TAG=${{ env.PROJECT_NAME }}-${CURRENT_VERSION}
+          echo "GIT_TAG=${GIT_TAG}" >> $GITHUB_OUTPUT
           echo git tag will be $GIT_TAG
-          
-          NEXT_VERSION=$(echo $CURRENT_VERSION |  awk -F'.' '{print $1"."$2"."$3+1}' |  sed s/[.]$//)      
+
+          NEXT_VERSION=$(echo $CURRENT_VERSION |  awk -F'.' '{print $1"."$2"."$3+1}' |  sed s/[.]$//)-SNAPSHOT
           echo "NEXT_VERSION=${NEXT_VERSION}" >> $GITHUB_OUTPUT
           echo next version will be $NEXT_VERSION
-          
 
       - name: Create release branch
         id: createReleaseBranch
@@ -85,13 +92,26 @@ jobs:
         run: |
           git checkout -b ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} refs/remotes/origin/main
           git push --set-upstream origin ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}}
-          echo "${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} branch created." 
+          echo "${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} branch created."
 
       - name: Checkout release branch
         uses: actions/checkout@v3
         with:
           ref: ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}}
 
+      - name: Remove SNAPSHOT postfix from version and commit/push it to release branch
+        id: removeSnapshot
+        shell: bash
+        run: |
+          sed -i -r "s/^[#]*\s*VERSION=.*/VERSION=${{steps.prepare.outputs.CURRENT_VERSION}}/" .env
+          echo ".env file VERSION property successfully updated ('${{steps.prepare.outputs.CURRENT_SNAPSHOT}}' -> '${{steps.prepare.outputs.CURRENT_VERSION}}')"
+
+          git commit -a -m "Bump version to ${{steps.prepare.outputs.CURRENT_VERSION}}"
+          git push --atomic origin ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}}
+
+###############
+## post release
+###############
       - name: Create tag
         id: createTag
         shell: bash
@@ -100,15 +120,14 @@ jobs:
           echo "${{steps.prepare.outputs.GIT_TAG}} tag created."
 
       - name: Bump next MINOR version and commit/push it to release branch
-        id: createRelease
+        id: bumpRelease
         shell: bash
         run: |
-          sed -ir "s/^[#]*\s*VERSION=.*/VERSION=${{steps.prepare.outputs.NEXT_VERSION}}/" .env
+          sed -i -r "s/^[#]*\s*VERSION=.*/VERSION=${{steps.prepare.outputs.NEXT_VERSION}}/" .env
           echo ".env file VERSION property successfully updated ('${{steps.prepare.outputs.CURRENT_VERSION}}' -> '${{steps.prepare.outputs.NEXT_VERSION}}')"
-          
+
           git commit -a -m "Bump version to ${{steps.prepare.outputs.NEXT_VERSION}}"
           git push --atomic origin ${{steps.prepare.outputs.RELEASE_BRANCH_NAME}} ${{steps.prepare.outputs.GIT_TAG}}
-
       - name: Checkout main
         uses: actions/checkout@v3
         with:
@@ -120,15 +139,15 @@ jobs:
         run: |
           MR_BRANCH_NAME=feature/${{ env.PROJECT_NAME }}-${{steps.prepare.outputs.CURRENT_VERSION}}-release
           echo "MR_BRANCH_NAME=${MR_BRANCH_NAME}" >> $GITHUB_OUTPUT
-          
-          NEXT_VERSION=$(echo ${{steps.prepare.outputs.CURRENT_VERSION}} |  awk -F'.' '{print $1"."$2+1"."0}' |  sed s/[.]$//)
-          sed -ir "s/^[#]*\s*VERSION=.*/VERSION=$NEXT_VERSION/" .env
-          
-          
+
+          NEXT_VERSION=$(echo ${{steps.prepare.outputs.CURRENT_VERSION}} |  awk -F'.' '{print $1"."$2+1"."0}' |  sed s/[.]$//)-SNAPSHOT
+          sed -i -r "s/^[#]*\s*VERSION=.*/VERSION=$NEXT_VERSION/" .env
+
+
           TARGET_BRANCH_NEXT_VERSION=$(sed -rn 's/^VERSION=([^\n]+)$/\1/p' .env)
           COMMIT_MESSAGE="Bump version to $TARGET_BRANCH_NEXT_VERSION"
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_OUTPUT
-          
+
           git add .
           git commit -a -m "${COMMIT_MESSAGE}"
           echo next master branch version is $TARGET_BRANCH_NEXT_VERSION
