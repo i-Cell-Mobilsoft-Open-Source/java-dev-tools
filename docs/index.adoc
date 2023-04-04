@@ -16,4 +16,4 @@ A projekt célja azon eszközök összefogása, mely a java fejlesztésekben seg
 [#release-notes]
 == Release notes
 
-include::release-notes/v0.0.1.adoc[leveloffset=+2]
+include::release-notes/v0.2.0.adoc[leveloffset=+2]
