@@ -6,7 +6,7 @@
 
 A projekt célja azon eszközök összefogása, mely a java fejlesztésekben segítséget nyújt.
 
-== Projekt felépéítése
+== Projekt felépítése
 
 * `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
 
@@ -34,6 +34,12 @@ Jelenleg elérhető kód formatterek úgy lettek elkészítve, hogy az eclipse f
 | org.eclipse.jdt.core.formatter.tabulation.char | tab | space | v15 | Tabulátor 4 space-el helyettesíti
 | org.eclipse.jdt.core.formatter.lineSplit | 120 | 150 | v15 | 150 karakter sor tördelés
 | org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation | 0 (*1) | 16 | v16 | Az annotaciók tördelése nem jól történt, konkrétan ki van default kapcsolva
+| org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation | 16 | 80 | 0.2.0 | A láncolt metódus hívások (fluent api) metódusonként új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
+| org.eclipse.jdt.core.formatter.align_selector_in_method_invocation_on_expression_first_line | - | true | 0.2.0 | A láncolt metódus hívások (fluent api) metódusonként új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
 |===
 
 

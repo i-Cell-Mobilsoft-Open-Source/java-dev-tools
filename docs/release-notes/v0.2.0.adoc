@@ -1,0 +1,26 @@
+= v0.2.0
+
+== codeformatter változások
+* eclipse és idea codeformatterek frissítésre kerültek.
+** láncolt metódus hívások és paraméter felsorolások a jövőben metódusonként új sorba kerülnek,
+ha túllépnék a megengedett maximális sorméretet.
++
+.korábbi működésre példa
+[source,java]
+----
+return Metadata.builder().withName(createTagName(tagDescriptor)).withDescription(tagDescriptor.getDescription()).withType(metricType)
+                .withDisplayName(tagDescriptor.getDisplayName()).withUnit(unit).build();
+----
++
+.új működésre példa
+[source,java]
+----
+return Metadata.builder()
+                .withName(createTagName(tagDescriptor))
+                .withDescription(tagDescriptor.getDescription())
+                .withType(metricType)
+                .withDisplayName(tagDescriptor.getDisplayName())
+                .withUnit(unit)
+                .build();
+
+----
