@@ -8,13 +8,19 @@ A projekt célja azon eszközök összefogása, mely a java fejlesztésekben seg
 
 == Projekt felépítése
 
-* `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
-
+* `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse idehez.
 
 == Code formatter
 
-Jelenleg elérhető kód formatterek úgy lettek elkészítve, hogy az eclipse formatter lett exportálva, az idea-ba importálva, és onnan kiexportálva.
+NOTE: IntelliJ idea használathoz, létezik egy plugin ami tudja használni az Eclipse formattert: https://plugins.jetbrains.com/plugin/6546-eclipse-code-formatter
 
+.Formatter fájlról
+A fájl eredetileg az Eclipse beépített beállításaiból keletkezik, pár változással.
+
+.Formatter eltérések a default Eclipse-től
+A változásokat úgy a legegyszerűbb meglátni, hogy az Eclipse-n belül létrehozunk egy új formatter-t ami az Eclipse default-jából indul ki, és kiexportáljuk. Megfogjuk a saját formaterünket, ami akár régebbi Eclipse verzión keletkezett, importáljuk majd exportáljuk. Ilyenkor a régebbi formatter kiegészül az Eclipse-ben beiktatott újabb szabályokkal.
+
+.Eltérések
 [cols="1,1,1,1,1"]
 |===
 | Beállítás azonosítója | Alapértelmezett érték | Használt érték | Verzió fájl-tól| Magyarázat
@@ -41,6 +47,44 @@ Jelenleg elérhető kód formatterek úgy lettek elkészítve, hogy az eclipse f
 | org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
 | org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
 |===
+
+.XML alapú forrás fájlok formázása
+1. Tab <-> 4 space
+2. "Tab"-ot használunk a tördelésnél
+3. Sor hossza max 150 karakter
+4. Default namespace rövidítés: xsd
+
+== IntelliJ IDEA-ban eclipse code formatter beállítása
+
+1) File menü /Settings...  Plugins (tipp a bal odali fa feletti keresőmezőben gépelve szűrődik a bal odali fa):
+
+image::docs/images/plugins.png[]
+
+2) A fában a "Plugins"-ra kattintás után a jobb oldalon megjelenik a "Marketplace". Kezdjük el a jobb oldali keresőben gépelni az "Eclipse Code Formatter"-t és telepítsük fel.
+
+3) Töltsük le akódformázási szabályokat, amit itt a repoban meg lehet találni a /codeformatter/eclipse mappában.
+
+4) Bal oldali fa fölött kezdjük el gépelni "Eclipse Code Formatter". Válasszuk ki. Majd jobb oldalon valahogy így kellene kinéznie a beállításoknak (verzió függő és helyi gép függő):
+
+image::docs/images/Eclipse-Code-Formatter.png[]
+
+5)   "*" imports mellőzése:
+
+Settings > Editor > Code Style > Java > Imports > Class count to use import with '' -> 100
+
+Settings > Editor > Code Style > Java > Imports > Names count to use static import with '' -> 100
+
+6) Tipp: Amivel összeakad: A "Settings > Editor > General > Auto Import > Optimize imports on the fly" beállítás. Ez összeakad az Eclipse Code Formatter-el, így az importokat 2x formázta, utoljára az IDEA sajátja.
+
+Ezért ha az autoimportot használjuk, akkor Settings > Editor > Code Style > Java Imports > Import layout részt így állítsuk be: import static all other imports; blank line; import java.*; blank line; import javax.*; blank line; import jakarta.*; blank line; import org.*; blank line; import all other
+
+Hasonlóan mint az alábbi ábrán (csak ott a jakarta hiányzik).
+
+image::docs/images/image2019-10-8_13-2-3.png[]
+
+Amikor egy régi kódot módosítunk, akkor lehet vegyes a tab / space egy soron. Ezért érdemes bekapcsolni, hogy lássuk a whiteSpace-kat is:
+
+image::docs/images/image2020-10-30_12-38-59.png[]
 
 
 Copyright (C) 2023 i-Cell Mobilsoft Zrt.

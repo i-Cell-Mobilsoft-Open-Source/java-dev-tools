@@ -24,3 +24,5 @@ return Metadata.builder()
                 .build();
 
 ----
+
+* idea megoldások törlése.
