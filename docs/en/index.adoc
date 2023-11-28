@@ -5,13 +5,13 @@
 = Icellmobilsoft java dev tools
 
 [#index]
-== Általános
+== General
 
-A projekt célja azon eszközök összefogása, mely a java fejlesztésekben segítséget nyújt.
+The aim of the project is to bring together the tools that will help in the development of Java.
 
-== Projekt felépítése
+== Structure of the project
 
-* `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
+* `/codeformatter` - In this folder you can find the company code formatter xmls for Eclipse and IDEA ides.
 
 [#release-notes]
 == Release notes
