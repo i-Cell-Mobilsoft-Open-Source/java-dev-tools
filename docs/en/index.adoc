@@ -1,0 +1,19 @@
+:toc: left
+:toclevels: 4
+:sectnums:
+
+= Icellmobilsoft java dev tools
+
+[#index]
+== Általános
+
+A projekt célja azon eszközök összefogása, mely a java fejlesztésekben segítséget nyújt.
+
+== Projekt felépítése
+
+* `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse és IDEA ide-khez.
+
+[#release-notes]
+== Release notes
+
+include::release-notes/v0.2.0.adoc[leveloffset=+2]
