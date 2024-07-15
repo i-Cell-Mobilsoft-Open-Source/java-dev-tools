@@ -1,7 +1,7 @@
 = v0.2.0
 
 == codeformatter changes
-* eclipse and idea codeformaters have been updated.
+* eclipse and idea codeformatters have been updated.
 ** chained method calls and parameter enumerations will be moved to a new line per method in the future,
 if the maximum allowed line size is exceeded.
 +
