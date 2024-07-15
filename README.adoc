@@ -2,87 +2,88 @@
 
 = java-dev-tools
 
-== Általános
+== General
 
-A projekt célja azon eszközök összefogása, mely a java fejlesztésekben segítséget nyújt.
+The project aims to consolidate tools that provide assistance in Java development.
 
-== Projekt felépítése
+== The structure of the project
 
-* `/codeformatter` - Ebben a mappában találhatók a céges kód formatter xml-ek Eclipse idehez.
+* `/codeformatter` - This folder contains the company's code formatter XML files for Eclipse IDE.
 
 == Code formatter
 
-NOTE: IntelliJ idea használathoz, létezik egy plugin ami tudja használni az Eclipse formattert: https://plugins.jetbrains.com/plugin/6546-eclipse-code-formatter
+NOTE: For IntelliJ IDEA usage, there exists a plugin that can utilize the Eclipse formatter: https://plugins.jetbrains.com/plugin/6546-eclipse-code-formatter
 
-.Formatter fájlról
-A fájl eredetileg az Eclipse beépített beállításaiból keletkezik, pár változással.
+.About the formatter file
+The file originates from the default settings of Eclipse, with a few modifications.
 
-.Formatter eltérések a default Eclipse-től
-A változásokat úgy a legegyszerűbb meglátni, hogy az Eclipse-n belül létrehozunk egy új formatter-t ami az Eclipse default-jából indul ki, és kiexportáljuk. Megfogjuk a saját formaterünket, ami akár régebbi Eclipse verzión keletkezett, importáljuk majd exportáljuk. Ilyenkor a régebbi formatter kiegészül az Eclipse-ben beiktatott újabb szabályokkal.
+.Differences in the formatter from the default Eclipse settings
+To see the differences easily, you can create a new formatter within Eclipse based on the default Eclipse settings, then export it. Next, take your own formatter, which might have been created in an older version of Eclipse, import it,
+and export it again. This way, the older formatter will be updated with any new rules introduced in Eclipse.
 
-.Eltérések
+.Differences
 [cols="1,1,1,1,1"]
 |===
-| Beállítás azonosítója | Alapértelmezett érték | Használt érték | Verzió fájl-tól| Magyarázat
+| Setting identifier | Default value | Used value | From version file | Explanation
 | org.eclipse.jdt.core.formatter.comment.insert_new_line_for_parameter | do not insert | insert | v15 | ?
 | org.eclipse.jdt.core.formatter.comment.indent_root_tags | false | true | v15 | ?
 | org.eclipse.jdt.core.formatter.comment.count_line_length_from_starting_position | true | false | v15 | ?
-| org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing | do not insert | insert | v15 | Minden fájlt végére rakjon egy üres sort (számos problémát megold)
+| org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing | do not insert | insert | v15 | Adds an empty line at the end of every file (solves numerous issues)
 | org.eclipse.jdt.core.formatter.format_line_comment_starting_on_first_column | false | true | v15 | ?
 | org.eclipse.jdt.core.formatter.alignment_for_annotations_on_enum_constant | 49(*1) | 0 | v15 | ?
 | org.eclipse.jdt.core.formatter.alignment_for_enum_constants | 16 (*1) | 0 | v15 | ?
 | org.eclipse.jdt.core.formatter.comment.align_tags_descriptions_grouped | true | false | v15 | ?
-| org.eclipse.jdt.core.formatter.comment.line_length | 80 | 150 | v15 | 150 karakter sor tördelés kommentekre
-| org.eclipse.jdt.core.formatter.use_on_off_tags | true | false | v15 | Ne lehessen kapcsolgatni a kódban a formattert
+| org.eclipse.jdt.core.formatter.comment.line_length | 80 | 150 | v15 | 150 character line wrapping for comments
+| org.eclipse.jdt.core.formatter.use_on_off_tags | true | false | v15 | Disable toggling the formatter in the code
 | org.eclipse.jdt.core.formatter.insert_space_after_closing_angle_bracket_in_type_arguments | do not insert | insert | v15 | ?
 | org.eclipse.jdt.core.formatter.alignment_for_assertion_message | 16 (*1) | 0 | v15 | ?
 | org.eclipse.jdt.core.formatter.comment.indent_parameter_description | false | true | v15 | ?
-| org.eclipse.jdt.core.formatter.tabulation.char | tab | space | v15 | Tabulátor 4 space-el helyettesíti
-| org.eclipse.jdt.core.formatter.lineSplit | 120 | 150 | v15 | 150 karakter sor tördelés
-| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation | 0 (*1) | 16 | v16 | Az annotaciók tördelése nem jól történt, konkrétan ki van default kapcsolva
-| org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation | 16 | 80 | 0.2.0 | A láncolt metódus hívások (fluent api) metódusonként új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
-| org.eclipse.jdt.core.formatter.align_selector_in_method_invocation_on_expression_first_line | - | true | 0.2.0 | A láncolt metódus hívások (fluent api) metódusonként új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
-| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
-| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
-| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
-| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression | 16 | 48 | 0.2.0 | Paraméter felsorolások új sorba kerüljeneknek, ha túllépnék a megengedett maximális sorméretet.
+| org.eclipse.jdt.core.formatter.tabulation.char | tab | space | v15 | Replace tabs with 4 spaces
+| org.eclipse.jdt.core.formatter.lineSplit | 120 | 150 | v15 | Line wrapping at 150 characters
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation | 0 (*1) | 16 | v16 | The annotation wrapping is not handled correctly; specifically, it is currently disabled by default
+| org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation | 16 | 80 | 0.2.0 | Chain method calls (fluent API) should be placed on new lines for each method if they exceed the allowed maximum line length
+| org.eclipse.jdt.core.formatter.align_selector_in_method_invocation_on_expression_first_line | - | true | 0.2.0 | Chain method calls (fluent API) should be placed on new lines for each method if they exceed the allowed maximum line length
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call | 16 | 48 | 0.2.0 | Parameter lists should be placed on new lines if they exceed the allowed maximum line length
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression | 16 | 48 | 0.2.0 | Parameter lists should be placed on new lines if they exceed the allowed maximum line length
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation | 16 | 48 | 0.2.0 | Parameter lists should be placed on new lines if they exceed the allowed maximum line length
+| org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression | 16 | 48 | 0.2.0 | Parameter lists should be placed on new lines if they exceed the allowed maximum line length
 |===
 
-.XML alapú forrás fájlok formázása
+.Formatting XML-based source files
 1. Tab <-> 4 space
-2. "Tab"-ot használunk a tördelésnél
-3. Sor hossza max 150 karakter
-4. Default namespace rövidítés: xsd
+2. We use tabs for indentation
+3. Maximum line length is 150 characters
+4. Default namespace abbreviation: xsd
 
-== IntelliJ IDEA-ban eclipse code formatter beállítása
+== Setting up Eclipse code formatter in IntelliJ IDEA:
 
-1) File menü /Settings...  Plugins (tipp a bal odali fa feletti keresőmezőben gépelve szűrődik a bal odali fa):
+1) File menu /Settings...  Plugins (Tip: Typing in the search field above the left-hand tree filters the left-hand tree):
 
 image::docs/images/plugins.png[]
 
-2) A fában a "Plugins"-ra kattintás után a jobb oldalon megjelenik a "Marketplace". Kezdjük el a jobb oldali keresőben gépelni az "Eclipse Code Formatter"-t és telepítsük fel.
+2) In the tree, after clicking on 'Plugins', 'Marketplace' appears on the right-hand side. Begin typing 'Eclipse Code Formatter' in the right-hand search field and install it.
 
-3) Töltsük le akódformázási szabályokat, amit itt a repoban meg lehet találni a /codeformatter/eclipse mappában.
+3) Download the code formatting rules, which can be found in the /codeformatter/eclipse directory of this repository.
 
-4) Bal oldali fa fölött kezdjük el gépelni "Eclipse Code Formatter". Válasszuk ki. Majd jobb oldalon valahogy így kellene kinéznie a beállításoknak (verzió függő és helyi gép függő):
+4) Start typing 'Eclipse Code Formatter' above the left-hand tree. Select it. On the right-hand side, the settings should look something like this (version and local machine dependent):
 
 image::docs/images/Eclipse-Code-Formatter.png[]
 
-5)   "*" imports mellőzése:
+5)   "*" Exclude imports:
 
 Settings > Editor > Code Style > Java > Imports > Class count to use import with '' -> 100
 
 Settings > Editor > Code Style > Java > Imports > Names count to use static import with '' -> 100
 
-6) Tipp: Amivel összeakad: A "Settings > Editor > General > Auto Import > Optimize imports on the fly" beállítás. Ez összeakad az Eclipse Code Formatter-el, így az importokat 2x formázta, utoljára az IDEA sajátja.
+6) Tip: What conflicts: The 'Settings > Editor > General > Auto Import > Optimize imports on the fly' setting. This conflicts with Eclipse Code Formatter, resulting in imports being formatted twice, with IntelliJ IDEA's own formatting taking precedence.
 
-Ezért ha az autoimportot használjuk, akkor Settings > Editor > Code Style > Java Imports > Import layout részt így állítsuk be: import static all other imports; blank line; import java.*; blank line; import javax.*; blank line; import jakarta.*; blank line; import org.*; blank line; import all other
+Therefore, if using auto-import, adjust 'Settings > Editor > Code Style > Java > Imports > Import layout' section as follows: import static all other imports; blank line; import java.*; blank line; import javax.*; blank line; import jakarta.*; blank line; import org.*; blank line; import all other
 
-Hasonlóan mint az alábbi ábrán (csak ott a jakarta hiányzik).
+Similar to the example below (with 'jakarta' missing there).
 
 image::docs/images/image2019-10-8_13-2-3.png[]
 
-Amikor egy régi kódot módosítunk, akkor lehet vegyes a tab / space egy soron. Ezért érdemes bekapcsolni, hogy lássuk a whiteSpace-kat is:
+When modifying old code, tabs and spaces may be mixed on the same line. Therefore, it's advisable to enable showing whitespace characters as well.
 
 image::docs/images/image2020-10-30_12-38-59.png[]
 
