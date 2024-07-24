@@ -17,3 +17,4 @@ A projekt célja azon eszközök összefogása, mely a java fejlesztésekben seg
 == Release notes
 
 include::release-notes/v0.2.0.adoc[leveloffset=+2]
+include::release-notes/v0.3.0.adoc[leveloffset=+2]

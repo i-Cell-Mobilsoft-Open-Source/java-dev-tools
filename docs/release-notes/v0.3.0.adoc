@@ -1,0 +1,58 @@
+= v0.3.0
+
+== codeformatter változások
+* eclipse és idea codeformatterek frissítésre kerültek.
+** `indent_switchstatements_compare_to_switch` engedélyezése
++
+.korábbi működésre példa
+[source,java]
+----
+int x = 0;
+switch (x) {
+case 0 -> log.info("case 0");
+case 1 -> {
+    log.info("case 1");
+    log.info("case 1");
+}
+default -> log.info("default");
+}
+
+switch (x) {
+case 0:
+    log.info("case 0");
+    break;
+case 1:
+    log.info("case 1");
+    log.info("case 1");
+    break;
+default:
+    log.info("default");
+}
+----
++
+.új működésre példa
+[source,java]
+----
+int x = 0;
+switch (x) {
+    case 0 -> log.info("case 0");
+    case 1 -> {
+        log.info("case 1");
+        log.info("case 1");
+    }
+    default -> log.info("default");
+}
+
+switch (x) {
+    case 0:
+        log.info("case 0");
+        break;
+    case 1:
+        log.info("case 1");
+        log.info("case 1");
+        break;
+    default:
+        log.info("default");
+}
+
+----

@@ -17,3 +17,4 @@ The aim of the project is to bring together the tools that will help in the deve
 == Release notes
 
 include::release-notes/v0.2.0.adoc[leveloffset=+2]
+include::release-notes/v0.3.0.adoc[leveloffset=+2]
