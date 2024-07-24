@@ -1,18 +1,18 @@
 = v0.2.0
 
-== codeformatter változások
-* eclipse és idea codeformatterek frissítésre kerültek.
-** láncolt metódus hívások és paraméter felsorolások a jövőben metódusonként új sorba kerülnek,
-ha túllépnék a megengedett maximális sorméretet.
+== codeformatter changes
+* eclipse and idea codeformatters have been updated.
+** chained method calls and parameter enumerations will be moved to a new line per method in the future,
+if the maximum allowed line size is exceeded.
 +
-.korábbi működésre példa
+.example of previous operation
 [source,java]
 ----
 return Metadata.builder().withName(createTagName(tagDescriptor)).withDescription(tagDescriptor.getDescription()).withType(metricType)
                 .withDisplayName(tagDescriptor.getDisplayName()).withUnit(unit).build();
 ----
 +
-.új működésre példa
+.example of new operation
 [source,java]
 ----
 return Metadata.builder()
@@ -25,4 +25,4 @@ return Metadata.builder()
 
 ----
 
-* idea megoldások törlése.
+* delete idea solutions.
