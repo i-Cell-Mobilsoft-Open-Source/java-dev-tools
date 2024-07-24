@@ -1,28 +1,58 @@
-= v0.2.0
+= v0.3.0
 
 == codeformatter változások
 * eclipse és idea codeformatterek frissítésre kerültek.
-** láncolt metódus hívások és paraméter felsorolások a jövőben metódusonként új sorba kerülnek,
-ha túllépnék a megengedett maximális sorméretet.
+** `indent_switchstatements_compare_to_switch` engedélyezése
 +
 .korábbi működésre példa
 [source,java]
 ----
-return Metadata.builder().withName(createTagName(tagDescriptor)).withDescription(tagDescriptor.getDescription()).withType(metricType)
-                .withDisplayName(tagDescriptor.getDisplayName()).withUnit(unit).build();
+int x = 0;
+switch (x) {
+case 0 -> log.info("case 0");
+case 1 -> {
+    log.info("case 1");
+    log.info("case 1");
+}
+default -> log.info("default");
+}
+
+switch (x) {
+case 0:
+    log.info("case 0");
+    break;
+case 1:
+    log.info("case 1");
+    log.info("case 1");
+    break;
+default:
+    log.info("default");
+}
 ----
 +
 .új működésre példa
 [source,java]
 ----
-return Metadata.builder()
-                .withName(createTagName(tagDescriptor))
-                .withDescription(tagDescriptor.getDescription())
-                .withType(metricType)
-                .withDisplayName(tagDescriptor.getDisplayName())
-                .withUnit(unit)
-                .build();
+int x = 0;
+switch (x) {
+    case 0 -> log.info("case 0");
+    case 1 -> {
+        log.info("case 1");
+        log.info("case 1");
+    }
+    default -> log.info("default");
+}
+
+switch (x) {
+    case 0:
+        log.info("case 0");
+        break;
+    case 1:
+        log.info("case 1");
+        log.info("case 1");
+        break;
+    default:
+        log.info("default");
+}
 
 ----
-
-* idea megoldások törlése.

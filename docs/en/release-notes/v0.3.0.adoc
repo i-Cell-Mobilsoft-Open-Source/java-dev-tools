@@ -1,28 +1,58 @@
-= v0.2.0
+= v0.3.0
 
 == codeformatter changes
 * eclipse and idea codeformaters have been updated.
-** chained method calls and parameter enumerations will be moved to a new line per method in the future,
-if the maximum allowed line size is exceeded.
+** enabling `indent_switchstatements_compare_to_switch`
 +
 .example of previous operation
 [source,java]
 ----
-return Metadata.builder().withName(createTagName(tagDescriptor)).withDescription(tagDescriptor.getDescription()).withType(metricType)
-                .withDisplayName(tagDescriptor.getDisplayName()).withUnit(unit).build();
+int x = 0;
+switch (x) {
+case 0 -> log.info("case 0");
+case 1 -> {
+    log.info("case 1");
+    log.info("case 1");
+}
+default -> log.info("default");
+}
+
+switch (x) {
+case 0:
+    log.info("case 0");
+    break;
+case 1:
+    log.info("case 1");
+    log.info("case 1");
+    break;
+default:
+    log.info("default");
+}
 ----
 +
 .example of new operation
 [source,java]
 ----
-return Metadata.builder()
-                .withName(createTagName(tagDescriptor))
-                .withDescription(tagDescriptor.getDescription())
-                .withType(metricType)
-                .withDisplayName(tagDescriptor.getDisplayName())
-                .withUnit(unit)
-                .build();
+int x = 0;
+switch (x) {
+    case 0 -> log.info("case 0");
+    case 1 -> {
+        log.info("case 1");
+        log.info("case 1");
+    }
+    default -> log.info("default");
+}
+
+switch (x) {
+    case 0:
+        log.info("case 0");
+        break;
+    case 1:
+        log.info("case 1");
+        log.info("case 1");
+        break;
+    default:
+        log.info("default");
+}
 
 ----
-
-* delete idea solutions.
