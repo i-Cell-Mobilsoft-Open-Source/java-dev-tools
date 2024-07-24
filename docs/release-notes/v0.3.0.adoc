@@ -1,10 +1,10 @@
 = v0.3.0
 
-== codeformatter változások
-* eclipse és idea codeformatterek frissítésre kerültek.
-** `indent_switchstatements_compare_to_switch` engedélyezése
+== codeformatter changes
+* eclipse and idea codeformaters have been updated.
+** enabling `indent_switchstatements_compare_to_switch`
 +
-.korábbi működésre példa
+.example of previous operation
 [source,java]
 ----
 int x = 0;
@@ -30,7 +30,7 @@ default:
 }
 ----
 +
-.új működésre példa
+.example of new operation
 [source,java]
 ----
 int x = 0;
