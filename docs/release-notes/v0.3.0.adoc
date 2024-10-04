@@ -70,7 +70,7 @@ switch (x) {
 *** `parentheses_positions_in_if_while_statement`
 *** `parentheses_positions_in_try_clause`
 *** `parentheses_positions_in_lambda_declaration`
-**
+
 +
 .example of previous format
 [source,java]
