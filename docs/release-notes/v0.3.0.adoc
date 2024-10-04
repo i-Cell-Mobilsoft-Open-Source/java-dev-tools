@@ -54,5 +54,51 @@ switch (x) {
     default:
         log.info("default");
 }
+----
 
+** changing `join_wrapped_lines` setting from `true` to `false` for keeping line breaks in parameter listing intact
+
+** changing settings below from `common_lines` to `preserve_positions` for keeping parentheses line breaks intact
+*** `parentheses_positions_in_for_statment`
+*** `parentheses_positions_in_enum_constant_declaration`
+*** `parentheses_positions_in_catch_clause`
+*** `parentheses_positions_in_annotation`
+*** `parentheses_positions_in_method_delcaration`
+*** `parentheses_positions_in_method_invocation`
+*** `parentheses_positions_in_record_declaration`
+*** `parentheses_positions_in_switch_statement`
+*** `parentheses_positions_in_if_while_statement`
+*** `parentheses_positions_in_try_clause`
+*** `parentheses_positions_in_lambda_declaration`
+
++
+.example of previous format
+[source,java]
+----
+    ALPHA(EnumSet.of(ProductType.ALPHA_LONG_NAMED_ENUM_ONE, ProductType.ALPHA_LONG_NAMED_ENUM_TWO)), BETA(EnumSet.of(
+            ProductType.BETA_LONG_NAMED_ENUM_ONE,
+            ProductType.BETA_LONG_NAMED_ENUM_TWO,
+            ProductType.BETA_LONG_NAMED_ENUM_THREE,
+            ProductType.BETA_LONG_NAMED_ENUM_FOUR,
+            ProductType.BETA_LONG_NAMED_ENUM_FIVE)), GAMMA(
+                    EnumSet.of(ProductType.GAMMA_LONG_NAMED_ENUM_ONE, ProductType.GAMMA_LONG_NAMED_ENUM_TWO, ProductType.GAMMA_LONG_NAMED_ENUM_THREE));
+----
++
+.example of new format
+[source,java]
+----
+    ALPHA(EnumSet.of(
+            ProductType.ALPHA_LONG_NAMED_ENUM_ONE,
+            ProductType.ALPHA_LONG_NAMED_ENUM_TWO
+    )), BETA(EnumSet.of(
+            ProductType.BETA_LONG_NAMED_ENUM_ONE,
+            ProductType.BETA_LONG_NAMED_ENUM_TWO,
+            ProductType.BETA_LONG_NAMED_ENUM_THREE,
+            ProductType.BETA_LONG_NAMED_ENUM_FOUR,
+            ProductType.BETA_LONG_NAMED_ENUM_FIVE
+    )), GAMMA(EnumSet.of(
+            ProductType.GAMMA_LONG_NAMED_ENUM_ONE,
+            ProductType.GAMMA_LONG_NAMED_ENUM_TWO,
+            ProductType.GAMMA_LONG_NAMED_ENUM_THREE
+    ));
 ----
