@@ -87,5 +87,46 @@ When modifying old code, tabs and spaces may be mixed on the same line. Therefor
 
 image::docs/images/image2020-10-30_12-38-59.png[]
 
+== Setting up with Spotless Maven plugin:
+
+1) Add the following to your pom.xml:
+
+[xml]
+----
+<plugin>
+    <groupId>com.diffplug.spotless</groupId>
+    <artifactId>spotless-maven-plugin</artifactId>
+    <version>${spotless.version}</version>
+    <configuration>
+        <ratchetFrom>origin/main</ratchetFrom>
+        <java>
+            <cleanthat/>
+            <eclipse>
+                <file>icellmobilsoft-eclipse-code-formatter.xml</file>
+            </eclipse>
+            <importOrder>
+                <file>java-import-order.txt</file>
+            </importOrder>
+            <toggleOffOn/>
+            <removeUnusedImports/>
+            <forbidWildcardImports/>
+            <forbidModuleImports/>
+            <trimTrailingWhitespace/>
+            <endWithNewline/>
+        </java>
+    </configuration>
+    <dependencies>
+        <dependency>
+            <groupId>hu.icellmobilsoft</groupId>
+            <artifactId>java-dev-tools</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</plugin>
+----
+
+2) Run `mvn spotless:check` or `mvn spotless:apply`
+
+For detailed instructions on configuring and using the Spotless Maven plugin, refer to the https://github.com/diffplug/spotless/tree/main/plugin-maven[official documentation].
 
 Copyright (C) 2023 i-Cell Mobilsoft Zrt.
